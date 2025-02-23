@@ -1,5 +1,6 @@
-from django.shortcuts import render
-from django.http import HttpResponse  
+from django.shortcuts import render  
+from .models import Project  
 
 def home(request):  
-    return HttpResponse("Welcome to AetherForge!")  
+    projects = Project.objects.all()  
+    return render(request, 'hub/home.html', {'projects': projects})  
