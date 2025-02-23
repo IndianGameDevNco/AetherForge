@@ -1,14 +1,12 @@
-<!DOCTYPE html>  
-<html>  
-<head>  
-    <title>AetherForge Projects</title>  
-</head>  
-<body>  
-    <h1>Your Projects</h1>  
-    <ul>  
-        {% for project in projects %}  
-            <li>{{ project.name }} ({{ project.language }})</li>  
-        {% endfor %}  
-    </ul>  
-</body>  
-</html>  
+{% extends 'hub/base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h1>Your Projects</h1>
+<ul>
+    {% for project in projects %}
+        <li class="project-item">{{ project.name }} ({{ project.language }})</li>
+    {% endfor %}
+</ul>
+{% endblock %}
