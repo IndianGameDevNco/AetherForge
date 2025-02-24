@@ -1,8 +1,8 @@
 from rest_framework import generics, permissions
 from .serializers import ProjectSerializer
 from django.shortcuts import render, redirect
-from django.contrib.auth import logout  
-from django.contrib.auth.forms import UserCreationForm  
+from django.contrib.auth import logout, login, authenticate
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.decorators import login_required  
 from .models import Project  
 
@@ -13,7 +13,17 @@ def home(request):
     return render(request, 'hub/home.html', {'projects': projects})  
 
 def login_view(request):
-    return render(request, 'hub/login.html')
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('home')
+    else:
+        form = AuthenticationForm()
 
 def logout_view(request):
     logout(request)  # Log out the user
