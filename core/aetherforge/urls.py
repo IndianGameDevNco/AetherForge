@@ -22,8 +22,10 @@ from hub import views  # Import views from the hub app
 urlpatterns = [  
     path('admin/', admin.site.urls),  
     path('', include('hub.urls')),  
-    # Add authentication URLs  
+    # Authentication URLs  
     path('login/', auth_views.LoginView.as_view(template_name='hub/login.html'), name='login'),  
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),  
     path('signup/', views.signup, name='signup'), 
+    # API URLs
+    path('api/', include('hub.api_urls')),
 ]  

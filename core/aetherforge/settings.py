@@ -25,6 +25,8 @@ SECRET_KEY = 'django-insecure-y-t+1s!bwkqjio99eq8@@or7dd2u)-_dlc4xkc7k1&$-%#2#zy
 DEBUG = True
 
 ALLOWED_HOSTS = []
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/home/'
 
 
 # Application definition
@@ -126,8 +128,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'hub/static']  
+STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

@@ -11,3 +11,5 @@ A Windows-native, AI-augmented developer ecosystem built with Python, C#, C++, G
 1. Clone this repo.  
 2. Install dependencies: `pip install -r requirements.txt`.  
 3. Run the Django server: `python core/manage.py runserver`.  
+
+KEY: 115dc31545a62d72a688d1a8e40e354d4a81442b

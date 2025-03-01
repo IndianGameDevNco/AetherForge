@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect
+from rest_framework import generics, permissions
+from .serializers import ProjectSerializer
 from django.contrib.auth import logout  
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm 
 from django.contrib.auth.decorators import login_required  
@@ -32,3 +34,22 @@ def signup(request):
     else:  
         form = UserCreationForm()  
     return render(request, 'hub/signup.html', {'form': form})  
+
+class ProjectListCreateAPI(generics.ListCreateAPIView):
+    serializer_class = ProjectSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        # Return projects for the logged-in user
+        return Project.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        # Automatically assign user to new projects
+        serializer.save(user=self.request.user)
+
+class ProjectDetailAPI(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = ProjectSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return Project.objects.filter(user=self.request.user)
