@@ -1,8 +1,6 @@
-from rest_framework import generics, permissions
-from .serializers import ProjectSerializer
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout  
-from django.contrib.auth.forms import UserCreationForm  
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm 
 from django.contrib.auth.decorators import login_required  
 from .models import Project  
 
@@ -13,6 +11,12 @@ def home(request):
     return render(request, 'hub/home.html', {'projects': projects})  
 
 def login_view(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(data=request.POST)  # Create an instance of the authentication form
+        if form.is_valid():  # Check if the form is valid
+            return redirect('home')  # Redirect to the home page
+    else:
+        form = AuthenticationForm()  # Create a new instance of the authentication form
     return render(request, 'hub/login.html')
 
 def logout_view(request):
@@ -28,22 +32,3 @@ def signup(request):
     else:  
         form = UserCreationForm()  
     return render(request, 'hub/signup.html', {'form': form})  
-
-class ProjectListCreateAPI(generics.ListCreateAPIView):
-    serializer_class = ProjectSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-    def get_queryset(self):
-        # Return projects for the logged-in user
-        return Project.objects.filter(user=self.request.user)
-
-    def perform_create(self, serializer):
-        # Automatically assign user to new projects
-        serializer.save(user=self.request.user)
-
-class ProjectDetailAPI(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = ProjectSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-    def get_queryset(self):
-        return Project.objects.filter(user=self.request.user)
